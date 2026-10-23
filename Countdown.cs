@@ -4,6 +4,9 @@
 // ============================================================================
 public sealed class Countdown
 {
+    // Time between frames at roughly 60 FPS, shared by everything that ticks a timer
+    public const float FrameTime = 0.016f;
+
     public float Duration { get; private set; }
     public float Remaining { get; private set; }
     public bool IsRunning => Remaining > 0;

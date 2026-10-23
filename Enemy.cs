@@ -4,6 +4,9 @@
 // ============================================================================
 public class Enemy : Character
 {
+    // Shared count of every enemy defeated so far
+    public static int EnemiesDefeated = 0;
+
     // Enemy behavior
     public EnemyType Type { get; private set; }
     private Countdown wanderTimer;
@@ -30,8 +33,8 @@ public class Enemy : Character
     {
         if (!IsAlive) return;
 
-        wanderTimer.Tick(0.016f);
-        hitTimer.Tick(0.016f);
+        wanderTimer.Tick(Countdown.FrameTime);
+        hitTimer.Tick(Countdown.FrameTime);
 
         // Movement based on type
         switch (Type)
@@ -73,6 +76,7 @@ public class Enemy : Character
     {
         Console.WriteLine($"💀 {CharacterName} has been defeated!");
         Console.WriteLine($"Dropped {LootReward} coins!");
+        EnemiesDefeated++;
         base.Die();
     }
 

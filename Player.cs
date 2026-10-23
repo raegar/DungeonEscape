@@ -10,10 +10,13 @@ public sealed class Player : Character
     private Countdown attackTimer;
 
     // Attack properties
-    private int attackDamage = 1;
+    public int attackDamage = 1;
 
     // Potion properties
     private int potionHealing = 2;
+
+    // Input
+    public bool InputEnabled { get; private set; } = true;
 
     public Player(string name)
         : base(name, maxHealth: 5, moveSpeed: 3f, sprite: '@')
@@ -27,8 +30,8 @@ public sealed class Player : Character
     public override void Act()
     {
         // Tick timers each frame
-        invulnerabilityTimer.Tick(0.016f); // Approximate 60 FPS
-        attackTimer.Tick(0.016f);
+        invulnerabilityTimer.Tick(Countdown.FrameTime);
+        attackTimer.Tick(Countdown.FrameTime);
     }
 
     // Override to handle invulnerability
@@ -54,6 +57,12 @@ public sealed class Player : Character
         RaiseDiedEvent();
     }
 
+    // Stop responding to the player once the game has ended
+    public void DisableInput()
+    {
+        InputEnabled = false;
+    }
+
     // Collect an item in the world
     public void Collect(Item item)
     {
@@ -65,6 +74,7 @@ public sealed class Player : Character
     public void Attack(Enemy target)
     {
         if (!IsAlive) return;
+        if (!InputEnabled) return;
         if (attackTimer.IsRunning)
         {
             Console.WriteLine($"{CharacterName} is not ready to attack yet!");

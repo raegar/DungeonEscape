@@ -3,6 +3,44 @@
 // ============================================================================
 class Program
 {
+    static bool gameOver = false;
+    static Player? player;
+
+    static void Win()
+    {
+        gameOver = true;
+        player?.DisableInput();
+        Console.WriteLine("\n🏆 YOU WIN! Every monster in the lair is defeated.");
+    }
+
+    static void Lose()
+    {
+        gameOver = true;
+        player?.DisableInput();
+        Console.WriteLine("\n💀 YOU LOSE! The dungeon claims another adventurer.");
+    }
+
+    static void Check(Character c)
+    {
+        if (EnemiesDefeatedCount() == 3)
+        {
+            Win();
+        }
+    }
+
+    static int EnemiesDefeatedCount()
+    {
+        return Enemy.EnemiesDefeated;
+    }
+
+    // Set everything up for a new game (also used by Replay)
+    static void ResetGame()
+    {
+        gameOver = false;
+        player = new Player("Adventurer");
+        player.Died += c => Lose();
+    }
+
     static void Main()
     {
         Console.WriteLine("╔════════════════════════════════════════════╗");
@@ -12,7 +50,8 @@ class Program
         Console.WriteLine("╚════════════════════════════════════════════╝\n");
 
         // ======== Create Player ========
-        Player hero = new Player("Adventurer");
+        ResetGame();
+        Player hero = player!;
         Console.WriteLine("Player created!");
         hero.PrintSprite();
         hero.DisplayStats();
@@ -36,6 +75,10 @@ class Program
         Enemy slime = new Enemy("Slime", EnemyType.Slime, health: 2, moveSpeed: 1.2f, loot: 50);
         Enemy bat = new Enemy("Bat", EnemyType.Bat, health: 1, moveSpeed: 2.2f, loot: 75);
         Ghost ghost = new Ghost("Phantom", health: 2, moveSpeed: 0.8f);
+
+        slime.Died += Check;
+        bat.Died += Check;
+        ghost.Died += Check;
 
         duntonRoom.AddEnemy(slime);
         duntonRoom.AddEnemy(bat);
