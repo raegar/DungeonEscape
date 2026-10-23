@@ -33,6 +33,14 @@ class Program
         return Enemy.EnemiesDefeated;
     }
 
+    // Set everything up for a new game (also used by Replay)
+    static void ResetGame()
+    {
+        gameOver = false;
+        player = new Player("Adventurer");
+        player.Died += c => Lose();
+    }
+
     static void Main()
     {
         Console.WriteLine("╔════════════════════════════════════════════╗");
@@ -42,9 +50,8 @@ class Program
         Console.WriteLine("╚════════════════════════════════════════════╝\n");
 
         // ======== Create Player ========
-        Player hero = new Player("Adventurer");
-        hero.Died += c => Lose();
-        player = hero;
+        ResetGame();
+        Player hero = player!;
         Console.WriteLine("Player created!");
         hero.PrintSprite();
         hero.DisplayStats();
