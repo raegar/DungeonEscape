@@ -15,6 +15,9 @@ public sealed class Player : Character
     // Potion properties
     private int potionHealing = 2;
 
+    // Input
+    public bool InputEnabled { get; private set; } = true;
+
     public Player(string name)
         : base(name, maxHealth: 5, moveSpeed: 3f, sprite: '@')
     {
@@ -54,6 +57,12 @@ public sealed class Player : Character
         RaiseDiedEvent();
     }
 
+    // Stop responding to the player once the game has ended
+    public void DisableInput()
+    {
+        InputEnabled = false;
+    }
+
     // Collect an item in the world
     public void Collect(Item item)
     {
@@ -65,6 +74,7 @@ public sealed class Player : Character
     public void Attack(Enemy target)
     {
         if (!IsAlive) return;
+        if (!InputEnabled) return;
         if (attackTimer.IsRunning)
         {
             Console.WriteLine($"{CharacterName} is not ready to attack yet!");

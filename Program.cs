@@ -4,16 +4,19 @@
 class Program
 {
     static bool gameOver = false;
+    static Player? player;
 
     static void Win()
     {
         gameOver = true;
+        player?.DisableInput();
         Console.WriteLine("\n🏆 YOU WIN! Every monster in the lair is defeated.");
     }
 
     static void Lose()
     {
         gameOver = true;
+        player?.DisableInput();
         Console.WriteLine("\n💀 YOU LOSE! The dungeon claims another adventurer.");
     }
 
@@ -41,6 +44,7 @@ class Program
         // ======== Create Player ========
         Player hero = new Player("Adventurer");
         hero.Died += c => Lose();
+        player = hero;
         Console.WriteLine("Player created!");
         hero.PrintSprite();
         hero.DisplayStats();
