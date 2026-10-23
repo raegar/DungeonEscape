@@ -33,8 +33,8 @@ public class Enemy : Character
     {
         if (!IsAlive) return;
 
-        wanderTimer.Tick(0.016f);
-        hitTimer.Tick(0.016f);
+        wanderTimer.Tick(Countdown.FrameTime);
+        hitTimer.Tick(Countdown.FrameTime);
 
         // Movement based on type
         switch (Type)

@@ -27,8 +27,8 @@ public sealed class Player : Character
     public override void Act()
     {
         // Tick timers each frame
-        invulnerabilityTimer.Tick(0.016f); // Approximate 60 FPS
-        attackTimer.Tick(0.016f);
+        invulnerabilityTimer.Tick(Countdown.FrameTime);
+        attackTimer.Tick(Countdown.FrameTime);
     }
 
     // Override to handle invulnerability
