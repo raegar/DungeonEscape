@@ -3,6 +3,33 @@
 // ============================================================================
 class Program
 {
+    static bool gameOver = false;
+
+    static void Win()
+    {
+        gameOver = true;
+        Console.WriteLine("\n🏆 YOU WIN! Every monster in the lair is defeated.");
+    }
+
+    static void Lose()
+    {
+        gameOver = true;
+        Console.WriteLine("\n💀 YOU LOSE! The dungeon claims another adventurer.");
+    }
+
+    static void Check(Character c)
+    {
+        if (EnemiesDefeatedCount() == 3)
+        {
+            Win();
+        }
+    }
+
+    static int EnemiesDefeatedCount()
+    {
+        return Enemy.EnemiesDefeated;
+    }
+
     static void Main()
     {
         Console.WriteLine("╔════════════════════════════════════════════╗");
@@ -13,6 +40,7 @@ class Program
 
         // ======== Create Player ========
         Player hero = new Player("Adventurer");
+        hero.Died += c => Lose();
         Console.WriteLine("Player created!");
         hero.PrintSprite();
         hero.DisplayStats();
@@ -36,6 +64,10 @@ class Program
         Enemy slime = new Enemy("Slime", EnemyType.Slime, health: 2, moveSpeed: 1.2f, loot: 50);
         Enemy bat = new Enemy("Bat", EnemyType.Bat, health: 1, moveSpeed: 2.2f, loot: 75);
         Ghost ghost = new Ghost("Phantom", health: 2, moveSpeed: 0.8f);
+
+        slime.Died += Check;
+        bat.Died += Check;
+        ghost.Died += Check;
 
         duntonRoom.AddEnemy(slime);
         duntonRoom.AddEnemy(bat);
