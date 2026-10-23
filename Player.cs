@@ -10,7 +10,7 @@ public sealed class Player : Character
     private Countdown attackTimer;
 
     // Attack properties
-    private int attackDamage = 1;
+    public int attackDamage = 1;
 
     // Potion properties
     private int potionHealing = 2;
